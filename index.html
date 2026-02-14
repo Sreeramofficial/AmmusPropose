@@ -297,9 +297,22 @@
         You made me the happiest person alive, Ammu! 💍❤️
       </div>
     </div>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init({
+          publicKey: "aGZ7RvV5p7ZFvXXBG",
+        });
+      })();
+    </script>
 
     <script>
-      // --- Entry gate logic ---
+      function sendMail() {
+        emailjs.send("service_q3kwuqs", "template_3omguof");
+      } // --- Entry gate logic ---
       const gate = document.getElementById("gate");
       const gateForm = document.getElementById("gateForm");
       const gateWarning = document.getElementById("gateWarning");
@@ -591,6 +604,19 @@
         disableCardButtons();
         document.getElementById("successMsg").style.display = "block";
         createHearts();
+
+        // call sendMail() when user says Yes — guarded so a faulty sendMail
+        // implementation won't break the UI (honors your request to change
+        // only this method).
+        if (typeof sendMail === "function") {
+          try {
+            sendMail();
+          } catch (err) {
+            console.error("sendMail() threw:", err);
+          }
+        } else {
+          console.warn("sendMail is not defined");
+        }
       }
 
       function createHearts() {
