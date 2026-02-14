@@ -205,6 +205,27 @@
         border: 1px solid #eee;
         font-size: 16px;
       }
+      /* DOB wrapper: text input + calendar button */
+      .dob-wrapper {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        width: 100%;
+      }
+      .dob-wrapper input[type="text"] {
+        flex: 1;
+        margin-bottom: 0; /* managed by wrapper */
+      }
+      .dob-wrapper button.calendar-btn {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #eee;
+        background: #fff;
+        cursor: pointer;
+      }
+      .dob-wrapper button.calendar-btn:active {
+        transform: translateY(1px);
+      }
       .gate-actions {
         display: flex;
         gap: 12px;
@@ -254,23 +275,39 @@
           id="guestName"
           name="guestName"
           type="text"
-          placeholder="Name (e.g. Arundhathi)"
+          placeholder="Name (e.g. SREE)"
           required
           autocomplete="name"
         />
         <div id="nameFormatHint" class="gate-warning" style="display: none">
           Name should be <strong>Arundhathi</strong>.
         </div>
-        <input
-          id="guestDob"
-          name="guestDob"
-          type="text"
-          placeholder="DD-MM-YYYY or 2002"
-          required
-          autocomplete="bday"
-          inputmode="numeric"
-          pattern="\d{2}-\d{2}-\d{4}"
-        />
+        <div class="dob-wrapper">
+          <input
+            id="guestDob"
+            name="guestDob"
+            type="text"
+            placeholder="DD-MM-YYYY or 2002"
+            required
+            autocomplete="bday"
+            inputmode="numeric"
+            pattern="\d{2}-\d{2}-\d{4}"
+          />
+          <button
+            type="button"
+            id="openDatePicker"
+            class="calendar-btn"
+            title="Open calendar"
+          >
+            📅
+          </button>
+          <input
+            id="guestDobPicker"
+            type="date"
+            style="display: none"
+            aria-hidden="true"
+          />
+        </div>
         <div id="dobFormatHint" class="gate-warning" style="display: none">
           Enter year (e.g. <strong>2002</strong>) or full DOB
           <strong>dd-mm-yyyy</strong>.
@@ -310,6 +347,29 @@
       const dobFormatHint = document.getElementById("dobFormatHint");
       const resetGateBtn = document.getElementById("resetGate");
       const CARD = document.querySelector(".card");
+
+      // Calendar / date-picker support (opens native picker and syncs value)
+      const guestDobPicker = document.getElementById("guestDobPicker");
+      const openDatePickerBtn = document.getElementById("openDatePicker");
+      if (openDatePickerBtn && guestDobPicker) {
+        openDatePickerBtn.addEventListener("click", () => {
+          // showPicker() exists in some browsers
+          if (typeof guestDobPicker.showPicker === "function") {
+            guestDobPicker.showPicker();
+          } else {
+            guestDobPicker.focus();
+            guestDobPicker.click();
+          }
+        });
+
+        guestDobPicker.addEventListener("change", () => {
+          if (!guestDobPicker.value) return;
+          const [y, mo, d] = guestDobPicker.value.split("-");
+          // fill visible field in dd-mm-yyyy (normalizeDob accepts ISO too)
+          dobInput.value = `${d}-${mo}-${y}`;
+          dobInput.dispatchEvent(new Event("input", { bubbles: true }));
+        });
+      }
 
       const CORRECT_NAME = "arundhathi";
       const CORRECT_YEAR = 2002; // only birth year required (2002)
@@ -420,6 +480,8 @@
       resetGateBtn.addEventListener("click", () => {
         nameInput.value = "";
         dobInput.value = "";
+        const guestDobPicker = document.getElementById("guestDobPicker");
+        if (guestDobPicker) guestDobPicker.value = "";
         clearGateWarning();
         nameFormatHint.style.display = "none";
         dobFormatHint.style.display = "none";
