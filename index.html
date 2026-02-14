@@ -387,7 +387,7 @@
           return false;
         }
         if (name !== CORRECT_NAME) {
-          nameFormatHint.textContent = "Name does not match.";
+          nameFormatHint.textContent = "You are not my girl!";
           nameFormatHint.style.display = "block";
           gateForm.classList.add("shake");
           setTimeout(() => gateForm.classList.remove("shake"), 400);
@@ -404,7 +404,7 @@
 
         // require exact DOB match
         if (dobNorm !== CORRECT_DOB) {
-          gateWarning.textContent = "You are not the girl I'm trying.";
+          gateWarning.textContent = "You are not my girl!";
           gateWarning.style.display = "block";
           gateForm.classList.add("shake");
           setTimeout(() => gateForm.classList.remove("shake"), 400);
