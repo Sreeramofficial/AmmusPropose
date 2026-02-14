@@ -120,33 +120,6 @@
           font-size: 18px;
           border-radius: 12px;
         }
-
-        /* DOB: keep text input + calendar button on mobile; use custom calendar popup */
-        .dob-wrapper {
-          flex-direction: column;
-          gap: 8px;
-          align-items: stretch;
-        }
-        .dob-wrapper input[type="text"] {
-          display: block;
-        }
-        .dob-wrapper button.calendar-btn {
-          display: inline-flex;
-          justify-content: center;
-          align-self: flex-end;
-          width: auto;
-        }
-        /* mobile calendar occupies bottom area */
-        .calendar-popup {
-          position: fixed;
-          left: 12px;
-          right: 12px;
-          bottom: 20px;
-          width: auto;
-          max-height: 60vh;
-          overflow: auto;
-        }
-
         .heart {
           font-size: 16px;
         }
@@ -212,88 +185,12 @@
         padding: 20px;
       }
       .gate-form {
-        position: relative;
         background: #fff;
         padding: 22px;
         border-radius: 16px;
         width: min(420px, 100%);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         text-align: center;
-      }
-
-      /* Custom calendar popup (used instead of native picker) */
-      .calendar-popup {
-        position: absolute;
-        left: 0;
-        top: calc(100% + 8px);
-        width: 320px;
-        max-width: calc(100% - 24px);
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-        padding: 10px;
-        z-index: 10000;
-        display: none;
-      }
-      .calendar-popup.open {
-        display: block;
-      }
-      .calendar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 6px 4px;
-      }
-      .cal-month-year {
-        font-weight: 700;
-        color: #ff4d6d;
-      }
-      .calendar-grid-headings {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 6px;
-        color: #999;
-        font-size: 12px;
-        padding: 6px 4px;
-      }
-      .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 6px;
-        padding: 6px 4px;
-      }
-      .calendar-grid .day {
-        border-radius: 6px;
-        padding: 8px 4px;
-        text-align: center;
-        cursor: pointer;
-        background: transparent;
-        border: none;
-        font-size: 14px;
-      }
-      .calendar-grid .day:hover {
-        background: #ffe6ec;
-      }
-      .calendar-grid .day.selected {
-        background: #ff4d6d;
-        color: #fff;
-      }
-      .calendar-grid .day.disabled {
-        color: #ccc;
-        pointer-events: none;
-      }
-      .calendar-actions {
-        display: flex;
-        gap: 8px;
-        justify-content: flex-end;
-        padding-top: 8px;
-      }
-      .calendar-actions button {
-        padding: 8px 10px;
-        border-radius: 8px;
-        border: 1px solid #eee;
-        background: #fff;
-        cursor: pointer;
       }
       .gate-form h2 {
         font-size: 20px;
@@ -307,32 +204,6 @@
         border-radius: 8px;
         border: 1px solid #eee;
         font-size: 16px;
-      }
-      /* DOB wrapper: text input + calendar button */
-      .dob-wrapper {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        width: 100%;
-      }
-      .dob-wrapper input[type="text"] {
-        flex: 1;
-        margin-bottom: 0; /* managed by wrapper */
-      }
-      .dob-wrapper button.calendar-btn {
-        padding: 10px 12px;
-        border-radius: 8px;
-        border: 1px solid #eee;
-        background: #fff;
-        cursor: pointer;
-      }
-      .dob-wrapper button.calendar-btn:active {
-        transform: translateY(1px);
-      }
-
-      /* hide native date input on desktop; will be shown on small screens */
-      .dob-wrapper input[type="date"] {
-        display: none;
       }
       .gate-actions {
         display: flex;
@@ -383,70 +254,23 @@
           id="guestName"
           name="guestName"
           type="text"
-          placeholder="Name (e.g. SREE)"
+          placeholder="Name (e.g. Arundhathi)"
           required
           autocomplete="name"
         />
         <div id="nameFormatHint" class="gate-warning" style="display: none">
           Name should be <strong>Arundhathi</strong>.
         </div>
-        <div class="dob-wrapper">
-          <input
-            id="guestDob"
-            name="guestDob"
-            type="text"
-            placeholder="DD-MM-YYYY or 2002"
-            required
-            autocomplete="bday"
-            inputmode="numeric"
-            pattern="\d{2}-\d{2}-\d{4}"
-          />
-          <button
-            type="button"
-            id="openDatePicker"
-            class="calendar-btn"
-            title="Open calendar"
-            aria-expanded="false"
-            aria-controls="calendarPopup"
-          >
-            📅
-          </button>
-
-          <div
-            id="calendarPopup"
-            class="calendar-popup"
-            aria-hidden="true"
-            role="dialog"
-          >
-            <div class="calendar-header">
-              <button
-                type="button"
-                class="cal-prev"
-                aria-label="Previous month"
-              >
-                ‹
-              </button>
-              <div class="cal-month-year" aria-live="polite"></div>
-              <button type="button" class="cal-next" aria-label="Next month">
-                ›
-              </button>
-            </div>
-            <div class="calendar-grid-headings">
-              <div>Su</div>
-              <div>Mo</div>
-              <div>Tu</div>
-              <div>We</div>
-              <div>Th</div>
-              <div>Fr</div>
-              <div>Sa</div>
-            </div>
-            <div class="calendar-grid" tabindex="0"></div>
-            <div class="calendar-actions">
-              <button type="button" id="calToday">Today</button>
-              <button type="button" id="calClose">Close</button>
-            </div>
-          </div>
-        </div>
+        <input
+          id="guestDob"
+          name="guestDob"
+          type="tel"
+          placeholder="DD-MM-YYYY or 2002"
+          required
+          autocomplete="bday"
+          inputmode="tel"
+          pattern="(\d{4}|\d{1,2}[-\/\.\s]\d{1,2}[-\/\.\s]\d{4})"
+        />
         <div id="dobFormatHint" class="gate-warning" style="display: none">
           Enter year (e.g. <strong>2002</strong>) or full DOB
           <strong>dd-mm-yyyy</strong>.
@@ -486,134 +310,6 @@
       const dobFormatHint = document.getElementById("dobFormatHint");
       const resetGateBtn = document.getElementById("resetGate");
       const CARD = document.querySelector(".card");
-
-      // Custom calendar popup (replaces native picker)
-      const openDatePickerBtn = document.getElementById("openDatePicker");
-      const calendarPopup = document.getElementById("calendarPopup");
-      const calGrid = calendarPopup.querySelector(".calendar-grid");
-      const calMonthYear = calendarPopup.querySelector(".cal-month-year");
-      const calPrev = calendarPopup.querySelector(".cal-prev");
-      const calNext = calendarPopup.querySelector(".cal-next");
-      const calTodayBtn = document.getElementById("calToday");
-      const calCloseBtn = document.getElementById("calClose");
-
-      let viewYear, viewMonth;
-      function pad(n) {
-        return String(n).padStart(2, "0");
-      }
-      function setViewFromInput() {
-        const parsed = normalizeDob(dobInput.value);
-        if (parsed) {
-          const [d, mo, y] = parsed.split("-").map(Number);
-          viewYear = y;
-          viewMonth = mo - 1;
-        } else {
-          const t = new Date();
-          viewYear = t.getFullYear();
-          viewMonth = t.getMonth();
-        }
-      }
-
-      function renderCalendar(month, year) {
-        calMonthYear.textContent =
-          new Intl.DateTimeFormat(navigator.language, { month: "long" }).format(
-            new Date(year, month),
-          ) +
-          " " +
-          year;
-        calGrid.innerHTML = "";
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        for (let i = 0; i < firstDay; i++) {
-          const blank = document.createElement("div");
-          blank.className = "day empty";
-          calGrid.appendChild(blank);
-        }
-        const today = new Date();
-        for (let d = 1; d <= daysInMonth; d++) {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "day";
-          btn.textContent = d;
-          const dt = new Date(year, month, d);
-          if (dt > today) {
-            btn.classList.add("disabled");
-            btn.disabled = true;
-          } else {
-            btn.addEventListener("click", () => {
-              dobInput.value = `${pad(d)}-${pad(month + 1)}-${year}`;
-              dobInput.dispatchEvent(new Event("input", { bubbles: true }));
-              closeCalendar();
-            });
-          }
-          const cur = normalizeDob(dobInput.value);
-          if (cur) {
-            const [cd, cmo, cy] = cur.split("-").map(Number);
-            if (cd === d && cmo === month + 1 && cy === year)
-              btn.classList.add("selected");
-          }
-          calGrid.appendChild(btn);
-        }
-      }
-
-      function openCalendar() {
-        setViewFromInput();
-        renderCalendar(viewMonth, viewYear);
-        calendarPopup.setAttribute("aria-hidden", "false");
-        calendarPopup.classList.add("open");
-        document.addEventListener("click", onDocClick);
-        document.addEventListener("keydown", onKeyDown);
-      }
-      function closeCalendar() {
-        calendarPopup.setAttribute("aria-hidden", "true");
-        calendarPopup.classList.remove("open");
-        document.removeEventListener("click", onDocClick);
-        document.removeEventListener("keydown", onKeyDown);
-      }
-      function onDocClick(e) {
-        if (
-          !calendarPopup.contains(e.target) &&
-          e.target !== openDatePickerBtn &&
-          e.target !== dobInput
-        )
-          closeCalendar();
-      }
-      function onKeyDown(e) {
-        if (e.key === "Escape") closeCalendar();
-      }
-
-      calPrev.addEventListener("click", () => {
-        viewMonth--;
-        if (viewMonth < 0) {
-          viewMonth = 11;
-          viewYear--;
-        }
-        renderCalendar(viewMonth, viewYear);
-      });
-      calNext.addEventListener("click", () => {
-        viewMonth++;
-        if (viewMonth > 11) {
-          viewMonth = 0;
-          viewYear++;
-        }
-        renderCalendar(viewMonth, viewYear);
-      });
-      calTodayBtn.addEventListener("click", () => {
-        const t = new Date();
-        viewYear = t.getFullYear();
-        viewMonth = t.getMonth();
-        renderCalendar(viewMonth, viewYear);
-      });
-      calCloseBtn.addEventListener("click", closeCalendar);
-
-      openDatePickerBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (calendarPopup.classList.contains("open")) closeCalendar();
-        else openCalendar();
-      });
-      dobInput.addEventListener("focus", () => {
-        openCalendar();
-      });
 
       const CORRECT_NAME = "arundhathi";
       const CORRECT_YEAR = 2002; // only birth year required (2002)
@@ -724,7 +420,6 @@
       resetGateBtn.addEventListener("click", () => {
         nameInput.value = "";
         dobInput.value = "";
-        if (typeof closeCalendar === "function") closeCalendar();
         clearGateWarning();
         nameFormatHint.style.display = "none";
         dobFormatHint.style.display = "none";
